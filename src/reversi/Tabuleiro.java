@@ -60,8 +60,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     private void postJogada() {
         limparPecas();
-        vez = getNextJogador();
-        vez.calcularMovimentos();
+        trocaJogador();
     }
 
     private void limparPecas() {
@@ -70,6 +69,23 @@ public class Tabuleiro extends JPanel implements ActionListener {
                 tabuleiro[c][l].setEnabled(false);
             }
         }
+    }
+
+    private void trocaJogador() {
+        vez = getNextJogador();
+        int quantidadeMovimentos = vez.calcularMovimentos();
+        if (quantidadeMovimentos == 0) {
+            System.out.println(vez.toString() + " não tem movimentos! Pulando a vez..");
+            try {
+                trocaJogador();
+            } catch (StackOverflowError stackOverflowError) {
+                finalizaJogo();
+            }
+        }
+    }
+
+    private void finalizaJogo() {
+
     }
 
     private Jogador getNextJogador() {
