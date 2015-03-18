@@ -2,6 +2,7 @@ package reversi;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by arthur on 13/03/15.
@@ -11,12 +12,13 @@ public class Jogador {
     private Color cor;
 
     private ArrayList<Peca> pecas;
-    private ArrayList<Movimento> movimentos;
+    private HashMap<Point, Movimento> movimentos;
 
     public Jogador(Tabuleiro tabuleiro, Color cor) {
         this.tabuleiro = tabuleiro;
         this.cor = cor;
-        pecas = new ArrayList<Peca>();
+        this.movimentos = new HashMap<Point, Movimento>();
+        this.pecas = new ArrayList<Peca>();
     }
 
     public Color getCor() {
@@ -24,21 +26,37 @@ public class Jogador {
     }
 
     public void addPeca(Peca peca) {
+        Jogador dono = peca.getDono();
+        if (dono != null) {
+            dono.removerPeca(peca);
+        }
         peca.setDono(this);
         pecas.add(peca);
     }
 
+    private void removerPeca(Peca peca) {
+        pecas.remove(peca);
+    }
+
     public void calcularMovimentos() {
+        movimentos.clear();
         for (Peca peca: pecas) {
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.CIMA);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.CIMA);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.NENHUMA);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.BAIXO);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.BAIXO);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.BAIXO);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.CIMA);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.CIMA);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.CIMA);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.NENHUMA);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.BAIXO);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.BAIXO);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.BAIXO);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
+            gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.CIMA);
         }
+        for (Movimento movimento: movimentos.values()) {
+            movimento.getPecaFinal().setEnabled(true);
+        }
+    }
+
+    public Movimento getMovimentoNaPosicao(Point posicao) {
+        return movimentos.get(posicao);
     }
 
     private enum DirecaoVertical {
@@ -73,18 +91,16 @@ public class Jogador {
         }
     }
 
-    private void gerarMovimentosNaDirecao(Peca pecaInicial, DirecaoHorizontal direcaoHorizontal, DirecaoVertical direcaoVertical ) {
-        System.out.println("Começando da peça:" + pecaInicial.toString());
+    private void gerarMovimentoNaDirecao(Peca pecaInicial, DirecaoHorizontal direcaoHorizontal, DirecaoVertical direcaoVertical) {
         boolean candidato = false;
+        Movimento movimento = new Movimento(pecaInicial);
         for (int coluna = pecaInicial.getColuna(),
                  linha = pecaInicial.getLinha();;
                 coluna = coluna + direcaoHorizontal.getValor(),
                 linha = linha + direcaoVertical.getValor()) {
             Peca peca;
             try {
-                System.out.println("Trying to get c=" + coluna + "; l=" + linha);
                 peca = tabuleiro.getPeca(coluna, linha);
-                System.out.println(peca.toString());
             } catch (ArrayIndexOutOfBoundsException e) {
                 break;
             }
@@ -92,10 +108,13 @@ public class Jogador {
                 continue;
             }
             if (peca.getDono() != this && peca.getDono() != null) {
+                movimento.addPecaCapturada(peca);
                 candidato = true;
                 continue;
             }
             if (peca.getDono() == null && candidato) {
+                movimento.setPecaFinal(peca);
+                movimentos.put(peca.getPosicao(), movimento);
                 peca.setEnabled(true);
                 break;
             }

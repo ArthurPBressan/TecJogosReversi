@@ -21,7 +21,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
     public Tabuleiro() {
         setLayout(new GridLayout(8, 8));
 
-        jogadores = new Jogador[] {new Jogador(this, Color.WHITE), new Jogador(this, Color.BLACK)};
+        jogadores = new Jogador[] {new Jogador(this, Color.RED), new Jogador(this, Color.BLUE)};
 
         tabuleiro = new Peca[8][8];
         for (int l = 0; l < nLin; l++) {
@@ -43,8 +43,19 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Peca source = (Peca) e.getSource();
-        vez.addPeca(source);
+        fazerJogada((Peca) e.getSource());
+        postJogada();
+    }
+
+    private void fazerJogada(Peca peca) {
+        Movimento movimento = vez.getMovimentoNaPosicao(peca.getPosicao());
+        for (Peca pecaCapturada : movimento.getPecasCapturadas()) {
+            vez.addPeca(pecaCapturada);
+        }
+        vez.addPeca(peca);
+    }
+
+    private void postJogada() {
         limparPecas();
         vez = getNextJogador();
         vez.calcularMovimentos();

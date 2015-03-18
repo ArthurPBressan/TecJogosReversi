@@ -9,15 +9,13 @@ import java.awt.*;
 public class Peca extends JButton {
     private static int tamanho = 64;
 
-    private int coluna;
-    private int linha;
+    private Point posicao;
 
     private Jogador dono;
 
     public Peca(int coluna, int linha, Tabuleiro tabuleiro) {
         super();
-        this.coluna = coluna;
-        this.linha = linha;
+        this.posicao = new Point(coluna, linha);
         setEnabled(false);
         addActionListener(tabuleiro);
     }
@@ -48,20 +46,21 @@ public class Peca extends JButton {
 
         g2D.setColor(Color.GRAY);
         g2D.drawOval(6, 6, getWidth() - 12, getHeight() - 12);
-        g2D.drawString("[" + coluna + "],[" + linha + "]", 10, 35);
+        g2D.drawString("[" + getColuna() + "],[" + getLinha() + "]", 10, 35);
     }
 
     public void setDono(Jogador dono) {
         this.dono = dono;
         setEnabled(false);
+        repaint();
     }
 
     public int getColuna() {
-        return coluna;
+        return posicao.x;
     }
 
     public int getLinha() {
-        return linha;
+        return posicao.y;
     }
 
     public Jogador getDono() {
@@ -71,9 +70,13 @@ public class Peca extends JButton {
     @Override
     public String toString() {
         return "Peca{" +
-                "coluna=" + coluna +
-                ", linha=" + linha +
+                "coluna=" + getColuna() +
+                ", linha=" + getLinha() +
                 ", dono=" + dono +
                 '}';
+    }
+
+    public Point getPosicao() {
+        return posicao;
     }
 }
