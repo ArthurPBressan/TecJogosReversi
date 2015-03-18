@@ -109,6 +109,9 @@ public class Jogador {
             if (peca == pecaInicial) {
                 continue;
             }
+            if (peca.getDono() == null && !candidato) {
+                break;
+            }
             if (peca.getDono() != this && peca.getDono() != null) {
                 movimento.addPecaCapturada(peca);
                 candidato = true;
@@ -119,7 +122,6 @@ public class Jogador {
                 ArrayList<Movimento> movimentos = movimentosMap.getOrDefault(peca.getPosicao(), new ArrayList<Movimento>());
                 movimentos.add(movimento);
                 movimentosMap.put(peca.getPosicao(), movimentos);
-                peca.setEnabled(true);
                 break;
             }
             if (peca.getDono() == this) {
