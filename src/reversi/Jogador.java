@@ -2,6 +2,7 @@ package reversi;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -38,7 +39,7 @@ public class Jogador {
         pecas.remove(peca);
     }
 
-    public void calcularMovimentos() {
+    public int calcularMovimentos() {
         movimentosMap.clear();
         for (Peca peca: pecas) {
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.CIMA);
@@ -50,11 +51,13 @@ public class Jogador {
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.CIMA);
         }
-        for (ArrayList<Movimento> movimentos : movimentosMap.values()) {
+        Collection<ArrayList<Movimento>> movimentosValues = movimentosMap.values();
+        for (ArrayList<Movimento> movimentos : movimentosValues) {
             for(Movimento movimento : movimentos) {
                 movimento.getPecaFinal().setEnabled(true);
             }
         }
+        return movimentosValues.size();
     }
 
     public ArrayList<Movimento> getMovimentosNaPosicao(Point posicao) {
