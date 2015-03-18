@@ -30,10 +30,14 @@ public class Jogador {
 
     public void calcularMovimentos() {
         for (Peca peca: pecas) {
-            //gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.NENHUMA);
-            //gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
             gerarMovimentosNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.CIMA);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.CIMA);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.NENHUMA);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.BAIXO);
             gerarMovimentosNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.BAIXO);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.BAIXO);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.CIMA);
         }
     }
 
