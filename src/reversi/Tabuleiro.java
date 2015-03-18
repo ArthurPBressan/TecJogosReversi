@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by arthur on 12/03/15.
@@ -48,9 +49,11 @@ public class Tabuleiro extends JPanel implements ActionListener {
     }
 
     private void fazerJogada(Peca peca) {
-        Movimento movimento = vez.getMovimentoNaPosicao(peca.getPosicao());
-        for (Peca pecaCapturada : movimento.getPecasCapturadas()) {
-            vez.addPeca(pecaCapturada);
+        ArrayList<Movimento> movimentos = vez.getMovimentosNaPosicao(peca.getPosicao());
+        for (Movimento movimento : movimentos) {
+            for (Peca pecaCapturada : movimento.getPecasCapturadas()) {
+                vez.addPeca(pecaCapturada);
+            }
         }
         vez.addPeca(peca);
     }

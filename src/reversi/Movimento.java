@@ -31,4 +31,13 @@ public class Movimento {
     public ArrayList<Peca> getPecasCapturadas() {
         return pecasCapturadas;
     }
+
+    @Override
+    public String toString() {
+        return "Movimento{" +
+                "pecaInicial=" + pecaInicial +
+                ", pecaFinal=" + pecaFinal +
+                ", pecasCapturadas=" + pecasCapturadas.size() +
+                '}';
+    }
 }

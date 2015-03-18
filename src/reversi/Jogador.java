@@ -12,12 +12,12 @@ public class Jogador {
     private Color cor;
 
     private ArrayList<Peca> pecas;
-    private HashMap<Point, Movimento> movimentos;
+    private HashMap<Point, ArrayList<Movimento>> movimentosMap;
 
     public Jogador(Tabuleiro tabuleiro, Color cor) {
         this.tabuleiro = tabuleiro;
         this.cor = cor;
-        this.movimentos = new HashMap<Point, Movimento>();
+        this.movimentosMap = new HashMap<Point, ArrayList<Movimento>>();
         this.pecas = new ArrayList<Peca>();
     }
 
@@ -39,7 +39,7 @@ public class Jogador {
     }
 
     public void calcularMovimentos() {
-        movimentos.clear();
+        movimentosMap.clear();
         for (Peca peca: pecas) {
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.CIMA);
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.CIMA);
@@ -50,13 +50,15 @@ public class Jogador {
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.CIMA);
         }
-        for (Movimento movimento: movimentos.values()) {
-            movimento.getPecaFinal().setEnabled(true);
+        for (ArrayList<Movimento> movimentos : movimentosMap.values()) {
+            for(Movimento movimento : movimentos) {
+                movimento.getPecaFinal().setEnabled(true);
+            }
         }
     }
 
-    public Movimento getMovimentoNaPosicao(Point posicao) {
-        return movimentos.get(posicao);
+    public ArrayList<Movimento> getMovimentosNaPosicao(Point posicao) {
+        return movimentosMap.get(posicao);
     }
 
     private enum DirecaoVertical {
@@ -114,7 +116,9 @@ public class Jogador {
             }
             if (peca.getDono() == null && candidato) {
                 movimento.setPecaFinal(peca);
-                movimentos.put(peca.getPosicao(), movimento);
+                ArrayList<Movimento> movimentos = movimentosMap.getOrDefault(peca.getPosicao(), new ArrayList<Movimento>());
+                movimentos.add(movimento);
+                movimentosMap.put(peca.getPosicao(), movimentos);
                 peca.setEnabled(true);
                 break;
             }
