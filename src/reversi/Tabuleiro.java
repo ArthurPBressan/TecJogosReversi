@@ -23,11 +23,11 @@ public class Tabuleiro extends JPanel implements ActionListener {
         setLayout(new GridLayout(8, 8));
 
         jogadores = new Jogador[] {new Jogador(this, Color.RED), new Jogador(this, Color.BLUE)};
-
+        PecaMouseListener pecaMouseListener = new PecaMouseListener(this);
         tabuleiro = new Peca[8][8];
         for (int l = 0; l < nLin; l++) {
             for (int c = 0; c < nCol; c++) {
-                Peca peca = new Peca(c, l, this);
+                Peca peca = new Peca(c, l, this, pecaMouseListener);
                 tabuleiro[c][l] = peca;
                 add(peca);
             }
@@ -80,5 +80,9 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     public Peca getPeca(int coluna, int linha) {
         return tabuleiro[coluna][linha];
+    }
+
+    public Jogador getJogadorAtual() {
+        return vez;
     }
 }
