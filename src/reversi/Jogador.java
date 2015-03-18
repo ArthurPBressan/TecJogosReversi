@@ -30,15 +30,17 @@ public class Jogador {
 
     public void calcularMovimentos() {
         for (Peca peca: pecas) {
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.NENHUMA);
-            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
+            //gerarMovimentosNaDirecao(peca, DirecaoHorizontal.DIREITA, DirecaoVertical.NENHUMA);
+            //gerarMovimentosNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.CIMA);
+            gerarMovimentosNaDirecao(peca, DirecaoHorizontal.NENHUMA, DirecaoVertical.BAIXO);
         }
     }
 
     private enum DirecaoVertical {
-        BAIXO(-1),
+        CIMA(-1),
         NENHUMA(0),
-        CIMA(1);
+        BAIXO(1);
 
         private int valor;
 
@@ -69,9 +71,11 @@ public class Jogador {
 
     private void gerarMovimentosNaDirecao(Peca pecaInicial, DirecaoHorizontal direcaoHorizontal, DirecaoVertical direcaoVertical ) {
         System.out.println("Começando da peça:" + pecaInicial.toString());
-        int linha = pecaInicial.getLinha();
         boolean candidato = false;
-        for (int coluna = pecaInicial.getColuna(); ; coluna = coluna + direcaoHorizontal.getValor()) {
+        for (int coluna = pecaInicial.getColuna(),
+                 linha = pecaInicial.getLinha();;
+                coluna = coluna + direcaoHorizontal.getValor(),
+                linha = linha + direcaoVertical.getValor()) {
             Peca peca;
             try {
                 System.out.println("Trying to get c=" + coluna + "; l=" + linha);
