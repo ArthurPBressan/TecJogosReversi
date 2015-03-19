@@ -1,12 +1,14 @@
 package reversi.jogador;
 
+import reversi.movimento.ConjuntoMovimentosComparator;
+import reversi.movimento.ConjuntoMovimentos;
 import reversi.movimento.Movimento;
 import reversi.peca.Peca;
 import reversi.Tabuleiro;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -17,12 +19,13 @@ public class Jogador {
     private Color cor;
 
     private ArrayList<Peca> pecas;
-    private HashMap<Point, ArrayList<Movimento>> movimentosMap;
+    private HashMap<Point, ConjuntoMovimentos> movimentosMap;
+    private Point pontoMelhorMovimento;
 
     public Jogador(Tabuleiro tabuleiro, Color cor) {
         this.tabuleiro = tabuleiro;
         this.cor = cor;
-        this.movimentosMap = new HashMap<Point, ArrayList<Movimento>>();
+        this.movimentosMap = new HashMap<Point, ConjuntoMovimentos>();
         this.pecas = new ArrayList<Peca>();
     }
 
@@ -55,8 +58,16 @@ public class Jogador {
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.NENHUMA);
             gerarMovimentoNaDirecao(peca, DirecaoHorizontal.ESQUERDA, DirecaoVertical.CIMA);
         }
-        Collection<ArrayList<Movimento>> movimentosValues = movimentosMap.values();
-        for (ArrayList<Movimento> movimentos : movimentosValues) {
+
+        ArrayList<ConjuntoMovimentos> movimentosValues = new ArrayList<ConjuntoMovimentos>(movimentosMap.values());
+        Collections.sort(movimentosValues, new ConjuntoMovimentosComparator());
+        if (movimentosValues.size() > 0) {
+            pontoMelhorMovimento = movimentosValues.get(0).getChave();
+        } else {
+            pontoMelhorMovimento = null;
+        }
+        System.out.println("Melhor movimento: " + pontoMelhorMovimento);
+        for (ConjuntoMovimentos movimentos : movimentosValues) {
             for(Movimento movimento : movimentos) {
                 movimento.getPecaFinal().setEnabled(true);
             }
@@ -130,7 +141,8 @@ public class Jogador {
             }
             if (peca.getDono() == null && candidato) {
                 movimento.setPecaFinal(peca);
-                ArrayList<Movimento> movimentos = movimentosMap.getOrDefault(peca.getPosicao(), new ArrayList<Movimento>());
+                Point posicao = peca.getPosicao();
+                ConjuntoMovimentos movimentos = movimentosMap.getOrDefault(posicao, new ConjuntoMovimentos(posicao));
                 movimentos.add(movimento);
                 movimentosMap.put(peca.getPosicao(), movimentos);
                 break;

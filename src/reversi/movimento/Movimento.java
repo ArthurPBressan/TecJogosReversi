@@ -39,12 +39,11 @@ public class Movimento {
         return "Movimento{" +
                 "pecaInicial=" + pecaInicial +
                 ", pecaFinal=" + pecaFinal +
-                ", pecasCapturadas=" + pecasCapturadas +
-                ", valor=" + valor() +
+                ", valor=" + getValor() +
                 '}';
     }
 
-    public int valor() {
+    public int getValor() {
         return pecasCapturadas.size();
     }
 }
