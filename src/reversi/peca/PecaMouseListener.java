@@ -1,4 +1,8 @@
-package reversi;
+package reversi.peca;
+
+import reversi.movimento.Movimento;
+import reversi.Tabuleiro;
+import reversi.jogador.Jogador;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

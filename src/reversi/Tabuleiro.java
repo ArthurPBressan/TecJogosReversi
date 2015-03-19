@@ -1,5 +1,11 @@
 package reversi;
 
+import reversi.jogador.Jogador;
+import reversi.jogador.JogadorComparator;
+import reversi.movimento.Movimento;
+import reversi.peca.Peca;
+import reversi.peca.PecaMouseListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

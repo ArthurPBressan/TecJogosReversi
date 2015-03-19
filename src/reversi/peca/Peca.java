@@ -1,4 +1,7 @@
-package reversi;
+package reversi.peca;
+
+import reversi.Tabuleiro;
+import reversi.jogador.Jogador;
 
 import javax.swing.*;
 import java.awt.*;

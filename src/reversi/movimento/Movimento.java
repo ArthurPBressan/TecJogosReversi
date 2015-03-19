@@ -1,4 +1,6 @@
-package reversi;
+package reversi.movimento;
+
+import reversi.peca.Peca;
 
 import java.util.ArrayList;
 

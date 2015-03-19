@@ -1,4 +1,8 @@
-package reversi;
+package reversi.jogador;
+
+import reversi.movimento.Movimento;
+import reversi.peca.Peca;
+import reversi.Tabuleiro;
 
 import java.awt.*;
 import java.util.ArrayList;

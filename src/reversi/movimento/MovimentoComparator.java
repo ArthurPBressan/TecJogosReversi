@@ -1,4 +1,6 @@
-package reversi;
+package reversi.movimento;
+
+import reversi.movimento.Movimento;
 
 import java.util.Comparator;
 

@@ -1,4 +1,6 @@
-package reversi;
+package reversi.jogador;
+
+import reversi.jogador.Jogador;
 
 import java.util.Comparator;
 
