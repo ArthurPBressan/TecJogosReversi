@@ -50,7 +50,6 @@ public class PecaMouseListener implements MouseListener {
         for (Movimento movimento : movimentos) {
             for (Peca pecaCapturada : movimento.getPecasCapturadas()) {
                 pecaCapturada.setHover(state);
-                pecaCapturada.repaint();
             }
         }
     }

@@ -59,7 +59,6 @@ public class Peca extends JButton {
         this.dono = dono;
         setEnabled(false);
         setHover(false);
-        repaint();
     }
 
     public int getColuna() {
@@ -89,5 +88,6 @@ public class Peca extends JButton {
 
     public void setHover(boolean hover) {
         this.hover = hover;
+        repaint();
     }
 }
