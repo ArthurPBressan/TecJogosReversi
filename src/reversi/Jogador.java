@@ -64,6 +64,10 @@ public class Jogador {
         return movimentosMap.get(posicao);
     }
 
+    public int getNumeroPecas() {
+        return pecas.size();
+    }
+
     private enum DirecaoVertical {
         CIMA(-1),
         NENHUMA(0),
@@ -137,6 +141,7 @@ public class Jogador {
     public String toString() {
         return "Jogador{" +
                 "cor=" + cor +
+                "num pecas= " + getNumeroPecas() +
                 '}';
     }
 }

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by arthur on 12/03/15.
@@ -60,7 +61,11 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     private void postJogada() {
         limparPecas();
-        trocaJogador();
+        trocaJogador(jogadores.length);
+        for (Jogador jogador : jogadores) {
+            System.out.print(jogador.toString() + " ");
+        }
+        System.out.println();
     }
 
     private void limparPecas() {
@@ -71,21 +76,27 @@ public class Tabuleiro extends JPanel implements ActionListener {
         }
     }
 
-    private void trocaJogador() {
+    private void trocaJogador(int n) {
         vez = getNextJogador();
         int quantidadeMovimentos = vez.calcularMovimentos();
         if (quantidadeMovimentos == 0) {
             System.out.println(vez.toString() + " não tem movimentos! Pulando a vez..");
-            try {
-                trocaJogador();
-            } catch (StackOverflowError stackOverflowError) {
+            if (n > 0) {
+                trocaJogador(n - 1);
+            } else {
                 finalizaJogo();
             }
         }
     }
 
     private void finalizaJogo() {
-
+        Arrays.sort(jogadores, new JogadorComparator());
+        if (jogadores[0].getNumeroPecas() == jogadores[1].getNumeroPecas()) {
+            System.out.println("Empate!");
+        } else {
+            Jogador vencedor = jogadores[0];
+            System.out.println("Vencedor: " + vencedor.toString());
+        }
     }
 
     private Jogador getNextJogador() {

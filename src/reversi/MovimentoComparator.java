@@ -8,6 +8,7 @@ import java.util.Comparator;
 public class MovimentoComparator implements Comparator<Movimento> {
     @Override
     public int compare(Movimento o1, Movimento o2) {
-        return o1.valor() - o2.valor();
+        // Ranqueia em ordem decresente de peças a serem capturadas
+        return o2.valor() - o1.valor();
     }
 }
