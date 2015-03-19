@@ -45,18 +45,23 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        fazerJogada((Peca) e.getSource());
-        postJogada();
+        if (fazerJogada((Peca) e.getSource())) {
+            postJogada();
+        }
     }
 
-    private void fazerJogada(Peca peca) {
+    private boolean fazerJogada(Peca peca) {
         ArrayList<Movimento> movimentos = vez.getMovimentosNaPosicao(peca.getPosicao());
+        if (movimentos == null) {
+            return false;
+        }
         for (Movimento movimento : movimentos) {
             for (Peca pecaCapturada : movimento.getPecasCapturadas()) {
                 vez.addPeca(pecaCapturada);
             }
         }
         vez.addPeca(peca);
+        return true;
     }
 
     private void postJogada() {
