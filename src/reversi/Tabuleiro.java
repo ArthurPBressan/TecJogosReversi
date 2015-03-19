@@ -29,7 +29,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
     public Tabuleiro() {
         setLayout(new GridLayout(8, 8));
 
-        jogadores = new Jogador[] {new Jogador(this, Color.RED), new Jogador(this, Color.BLUE)};
+        jogadores = new Jogador[] {new Jogador(this, Color.RED), new Jogador(this, Color.BLUE, true)};
         PecaMouseListener pecaMouseListener = new PecaMouseListener(this);
         tabuleiro = new Peca[8][8];
         for (int l = 0; l < nLin; l++) {
@@ -51,15 +51,13 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (fazerJogada((Peca) e.getSource())) {
-            postJogada();
-        }
+        fazerJogada((Peca) e.getSource());
     }
 
-    private boolean fazerJogada(Peca peca) {
+    public void fazerJogada(Peca peca) {
         ArrayList<Movimento> movimentos = vez.getMovimentosNaPosicao(peca.getPosicao());
         if (movimentos == null) {
-            return false;
+            return;
         }
         for (Movimento movimento : movimentos) {
             for (Peca pecaCapturada : movimento.getPecasCapturadas()) {
@@ -67,7 +65,7 @@ public class Tabuleiro extends JPanel implements ActionListener {
             }
         }
         vez.addPeca(peca);
-        return true;
+        postJogada();
     }
 
     private void postJogada() {
@@ -77,6 +75,9 @@ public class Tabuleiro extends JPanel implements ActionListener {
             System.out.print(jogador.toString() + " ");
         }
         System.out.println();
+        if (vez.isIA()) {
+            vez.jogar();
+        }
     }
 
     private void limparPecas() {
@@ -122,5 +123,9 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     public Jogador getJogadorAtual() {
         return vez;
+    }
+
+    public Peca getPeca(Point pontoMelhorMovimento) {
+        return getPeca(pontoMelhorMovimento.x, pontoMelhorMovimento.y);
     }
 }

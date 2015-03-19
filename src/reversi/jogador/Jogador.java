@@ -17,14 +17,25 @@ import java.util.HashMap;
 public class Jogador {
     private Tabuleiro tabuleiro;
     private Color cor;
-
     private ArrayList<Peca> pecas;
     private HashMap<Point, ConjuntoMovimentos> movimentosMap;
     private Point pontoMelhorMovimento;
+    private boolean IA;
 
     public Jogador(Tabuleiro tabuleiro, Color cor) {
         this.tabuleiro = tabuleiro;
         this.cor = cor;
+        this.IA = false;
+
+        this.movimentosMap = new HashMap<Point, ConjuntoMovimentos>();
+        this.pecas = new ArrayList<Peca>();
+    }
+
+    public Jogador(Tabuleiro tabuleiro, Color cor, boolean IA) {
+        this.tabuleiro = tabuleiro;
+        this.cor = cor;
+        this.IA = IA;
+
         this.movimentosMap = new HashMap<Point, ConjuntoMovimentos>();
         this.pecas = new ArrayList<Peca>();
     }
@@ -81,6 +92,12 @@ public class Jogador {
 
     public int getNumeroPecas() {
         return pecas.size();
+    }
+
+    public void jogar() {
+        if (pontoMelhorMovimento != null) {
+            tabuleiro.fazerJogada(tabuleiro.getPeca(pontoMelhorMovimento));
+        }
     }
 
     private enum DirecaoVertical {
@@ -159,5 +176,9 @@ public class Jogador {
                 "cor=" + cor +
                 "num pecas= " + getNumeroPecas() +
                 '}';
+    }
+
+    public boolean isIA() {
+        return IA;
     }
 }
