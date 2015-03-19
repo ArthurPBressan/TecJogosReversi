@@ -7,7 +7,6 @@ import java.awt.*;
  * Created by arthur on 12/03/15.
  */
 public class Peca extends JButton {
-    private static int tamanho = 64;
 
     private Point posicao;
 
@@ -34,7 +33,7 @@ public class Peca extends JButton {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(tamanho, tamanho);
+        return new Dimension(64, 64);
     }
 
     @Override
