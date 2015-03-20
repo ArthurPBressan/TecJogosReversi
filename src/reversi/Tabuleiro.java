@@ -56,6 +56,9 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
         vez = jogadores[0];
         vez.calcularMovimentos();
+        if (vez.isIA()) {
+            vez.jogar();
+        }
     }
 
     @Override
@@ -107,7 +110,6 @@ public class Tabuleiro extends JPanel implements ActionListener {
         int quantidadeMovimentos = vez.calcularMovimentos();
         if (quantidadeMovimentos == 0) {
             JOptionPane.showMessageDialog(this, vez.getNome() + " não tem movimentos! Pulando a vez..");
-            System.out.println();
             if (n > 0) {
                 trocaJogador(n - 1);
             } else {
