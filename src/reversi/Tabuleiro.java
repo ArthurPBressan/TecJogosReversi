@@ -25,16 +25,25 @@ public class Tabuleiro extends JPanel implements ActionListener {
     private int jogada = 0;
     private int nCol = 8;
     private int nLin = 8;
+    private boolean debug;
 
-    public Tabuleiro() {
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public Tabuleiro(boolean debug) {
+        this.debug = debug;
         setLayout(new GridLayout(8, 8));
 
-        jogadores = new Jogador[] {new Jogador(this, Color.RED), new Jogador(this, Color.BLUE, true)};
+        jogadores = new Jogador[] {
+                new Jogador(this, Color.WHITE, false, "Branco"),
+                new Jogador(this, Color.BLACK, false, "Preto")
+        };
         PecaMouseListener pecaMouseListener = new PecaMouseListener(this);
         tabuleiro = new Peca[8][8];
         for (int l = 0; l < nLin; l++) {
             for (int c = 0; c < nCol; c++) {
-                Peca peca = new Peca(c, l, this, pecaMouseListener);
+                Peca peca = new Peca(c, l, this, pecaMouseListener, debug);
                 tabuleiro[c][l] = peca;
                 add(peca);
             }
@@ -70,17 +79,22 @@ public class Tabuleiro extends JPanel implements ActionListener {
 
     private void postJogada() {
         limparPecas();
-        trocaJogador(jogadores.length);
-        for (Jogador jogador : jogadores) {
-            System.out.print(jogador.toString() + " ");
+        trocaJogador(jogadores.length - 1);
+        if (debug) {
+            for (Jogador jogador : jogadores) {
+                System.out.print(jogador.toString() + " ");
+            }
+            System.out.println();
         }
-        System.out.println();
         if (vez.isIA()) {
             vez.jogar();
         }
     }
 
     private void limparPecas() {
+        if (!debug) {
+            return;
+        }
         for (int l = 0; l < nLin; l++) {
             for (int c = 0; c < nCol; c++) {
                 tabuleiro[c][l].setEnabled(false);
@@ -92,7 +106,8 @@ public class Tabuleiro extends JPanel implements ActionListener {
         vez = getNextJogador();
         int quantidadeMovimentos = vez.calcularMovimentos();
         if (quantidadeMovimentos == 0) {
-            System.out.println(vez.toString() + " não tem movimentos! Pulando a vez..");
+            JOptionPane.showMessageDialog(this, vez.getNome() + " não tem movimentos! Pulando a vez..");
+            System.out.println();
             if (n > 0) {
                 trocaJogador(n - 1);
             } else {
@@ -104,10 +119,10 @@ public class Tabuleiro extends JPanel implements ActionListener {
     private void finalizaJogo() {
         Arrays.sort(jogadores, new JogadorComparator());
         if (jogadores[0].getNumeroPecas() == jogadores[1].getNumeroPecas()) {
-            System.out.println("Empate!");
+            JOptionPane.showMessageDialog(this, "Empate!");
         } else {
             Jogador vencedor = jogadores[0];
-            System.out.println("Vencedor: " + vencedor.toString());
+            JOptionPane.showMessageDialog(this, "Vencedor: " + vencedor.getNome() + " com " + vencedor.getNumeroPecas() + " peças.");
         }
     }
 

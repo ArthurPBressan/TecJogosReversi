@@ -15,11 +15,15 @@ public class Peca extends JButton {
 
     private Jogador dono;
     private boolean hover = false;
+    private boolean debug = false;
 
-    public Peca(int coluna, int linha, Tabuleiro tabuleiro, PecaMouseListener pecaMouseListener) {
+    public Peca(int coluna, int linha, Tabuleiro tabuleiro, PecaMouseListener pecaMouseListener, boolean debug) {
         super();
+        this.debug = debug;
         this.posicao = new Point(coluna, linha);
-        setEnabled(false);
+        if (this.debug) {
+            setEnabled(false);
+        }
         addActionListener(tabuleiro);
         addMouseListener(pecaMouseListener);
     }
@@ -50,11 +54,13 @@ public class Peca extends JButton {
 
         g2D.setColor(Color.GRAY);
         g2D.drawOval(6, 6, getWidth() - 12, getHeight() - 12);
-        g2D.drawString("[" + getColuna() + "],[" + getLinha() + "]", 10, 35);
-        if (hover) {
-            g2D.setPaint(Color.BLACK);
-            g2D.setStroke(new BasicStroke(10f));
-            g2D.draw(new Rectangle.Double(0, 0, getWidth(), getHeight()));
+        if (debug) {
+            g2D.drawString("[" + getColuna() + "],[" + getLinha() + "]", 10, 35);
+            if (hover) {
+                g2D.setPaint(Color.BLACK);
+                g2D.setStroke(new BasicStroke(10f));
+                g2D.draw(new Rectangle.Double(0, 0, getWidth(), getHeight()));
+            }
         }
     }
 

@@ -46,6 +46,9 @@ public class PecaMouseListener implements MouseListener {
     }
 
     private void setPecasCapturadasHoverState(Peca peca, boolean state) {
+        if (!tabuleiro.isDebug()) {
+            return;
+        }
         Jogador jogador = tabuleiro.getJogadorAtual();
         ArrayList<Movimento> movimentos = jogador.getMovimentosNaPosicao(peca.getPosicao());
         if (movimentos == null) {

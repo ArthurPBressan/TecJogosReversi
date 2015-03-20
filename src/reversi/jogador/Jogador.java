@@ -21,20 +21,17 @@ public class Jogador {
     private HashMap<Point, ConjuntoMovimentos> movimentosMap;
     private Point pontoMelhorMovimento;
     private boolean IA;
+    private String nome;
 
-    public Jogador(Tabuleiro tabuleiro, Color cor) {
-        this.tabuleiro = tabuleiro;
-        this.cor = cor;
-        this.IA = false;
-
-        this.movimentosMap = new HashMap<Point, ConjuntoMovimentos>();
-        this.pecas = new ArrayList<Peca>();
+    public String getNome() {
+        return nome;
     }
 
-    public Jogador(Tabuleiro tabuleiro, Color cor, boolean IA) {
+    public Jogador(Tabuleiro tabuleiro, Color cor, boolean IA, String nome) {
         this.tabuleiro = tabuleiro;
         this.cor = cor;
         this.IA = IA;
+        this.nome = nome;
 
         this.movimentosMap = new HashMap<Point, ConjuntoMovimentos>();
         this.pecas = new ArrayList<Peca>();
@@ -77,10 +74,12 @@ public class Jogador {
         } else {
             pontoMelhorMovimento = null;
         }
-        System.out.println("Melhor movimento: " + pontoMelhorMovimento);
-        for (ConjuntoMovimentos movimentos : movimentosValues) {
-            for(Movimento movimento : movimentos) {
-                movimento.getPecaFinal().setEnabled(true);
+        if (tabuleiro.isDebug()) {
+            System.out.println("Melhor movimento: " + pontoMelhorMovimento);
+            for (ConjuntoMovimentos movimentos : movimentosValues) {
+                for(Movimento movimento : movimentos) {
+                    movimento.getPecaFinal().setEnabled(true);
+                }
             }
         }
         return movimentosValues.size();

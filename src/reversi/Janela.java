@@ -9,7 +9,7 @@ import java.awt.*;
 public class Janela extends JFrame {
     public Janela() throws HeadlessException {
         super("Reversi");
-        getContentPane().add(new Tabuleiro());
+        getContentPane().add(new Tabuleiro(false));
         pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
